@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "140944006084",
+    "firebase_url": "https://scanmove-app.firebaseio.com",
+    "project_id": "scanmove-app",
+    "storage_bucket": "scanmove-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:140944006084:android:94d57e6d1ce90461",
+        "android_client_info": {
+          "package_name": "com.example.android.scanmove"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "140944006084-k1v50fubjjo300jhaklool05ijm6it82.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.android.scanmove",
+            "certificate_hash": "FB55EA27A10AD4254004067B2FAD68407205DED0"
+          }
+        },
+        {
+          "client_id": "140944006084-1albsdtoith97n80hr4eev5q7p53u58m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDb2TSQ7XBsjWkoeZNk42tCtXDBafzzI6w"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "140944006084-1albsdtoith97n80hr4eev5q7p53u58m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

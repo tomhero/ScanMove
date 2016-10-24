@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <color name="colorPrimary">#616161</color>
+
+    <color name="colorPrimaryDark">#424242 </color>
+
+    <color name="colorAccent">#f99f1b</color>
+
+    <color name="colorTint">#55000000</color>
+
+    <color name="placeEngColor">#BBDEFB</color>
+
+    <color name="placeThColor">#B2DFDB</color>
+
+    <color name="cardEventColor">#BDBDBD</color>
+
+    <color name="LandmarkBackgroundColor">#2196F3</color>
+
+</resources>

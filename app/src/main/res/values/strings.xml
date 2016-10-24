@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">ScanMove</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="explore_fragment_title">Hello explore fragment</string>
+
+    <string name="favorite_fragment_title">Hello favorite fragment</string>
+
+    <string name="interested_fragment_title">Hello interested fragment</string>
+
+    <string name="map_fragment_title">Hello map fragment</string>
+
+    <string name="scan_fragment_title">Hello scan fragment</string>
+
+    <string name="placeImageContentDescription"> image of QR code scan result place </string>
+
+    <string name="infoIconContentDescription"> for indicate th direction </string>
+    
+    <string name="arrowIconContentDescription"> for more information of the event  </string>
+
+    <!-- Dummy data -->
+    <string name="cheese_ipsum">Jarlsberg lancashire edam. Dolcelatte hard cheese brie st. agur blue
+    cheese caerphilly bavarian bergkase cheese and biscuits mascarpone. Cheeseburger swiss bavarian
+    bergkase cream cheese fromage frais cheesy feet port-salut airedale. St. agur blue cheese rubber
+    cheese caerphilly cheddar cheesecake cream cheese manchego lancashire. Roquefort squirty cheese
+    the big cheese.</string>
+    <string name="checkin">Checkin</string>
+
+    <!-- use in ItemClickSupport class-->
+    <item name="item_click_support" type="id" />
+
+    <string name="more_info">More Information</string>
+
+
+    <string name="infomation">Information</string>
+</resources>

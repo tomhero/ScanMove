@@ -1,0 +1,52 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <!--&lt;!&ndash; App bar style &ndash;&gt;-->
+    <!--<style name="MiwokAppBarStyle" parent="style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">-->
+        <!--&lt;!&ndash; Remove the shadow below the app bar &ndash;&gt;-->
+        <!--<item name="elevation">0dp</item>-->
+    <!--</style>-->
+
+    <!--<style name="IconTabLayout" parent="Widget.Design.TabLayout">-->
+        <!--&lt;!&ndash;<item name="tabMaxWidth">@dimen/tab_max_width</item>&ndash;&gt;-->
+        <!--<item name="tabIndicatorColor">?attr/colorAccent</item>-->
+        <!--<item name="tabIndicatorHeight">2dp</item>-->
+        <!--<item name="tabPaddingStart">12dp</item>-->
+        <!--<item name="tabPaddingEnd">12dp</item>-->
+        <!--<item name="tabBackground">?attr/selectableItemBackground</item>-->
+        <!--<item name="tabTextAppearance">@style/MyCustomTabTextAppearance</item>-->
+        <!--<item name="tabSelectedTextColor">?android:textColorPrimary</item>-->
+    <!--</style>-->
+    <!--<style name="MyCustomTabTextAppearance" parent="TextAppearance.Design.Tab">-->
+        <!--<item name="android:textSize">14sp</item>-->
+        <!--<item name="android:textColor">@color/colorPrimaryDark</item>-->
+        <!--<item name="textAllCaps">true</item>-->
+    <!--</style>-->
+
+    <style name="MyCustomTabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabTextAppearance">@style/MyCustomTextAppearance</item>
+        <item name="tabIndicatorColor">@color/colorPrimaryDark</item>
+        <item name="tabIndicatorHeight">2dp</item>
+    </style>
+
+    <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="Widget.CardContent" parent="android:Widget">
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:paddingBottom">24dp</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+
+</resources>
