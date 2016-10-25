@@ -92,7 +92,7 @@ public class EventListAdapter extends RecyclerView.Adapter<EventListAdapter.View
         textViewName.setText(event.getName());
 
         TextView textViewDate = viewHolder.dateTextView;
-        textViewDate.setText(event.getBegin() + " To " + event.getEnd());
+        textViewDate.setText("From " + event.getBegin() + " To " + event.getEnd());
 
 
     }

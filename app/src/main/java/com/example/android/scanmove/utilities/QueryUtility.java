@@ -1,5 +1,6 @@
 package com.example.android.scanmove.utilities;
 
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import com.example.android.scanmove.appmodel.Event;
@@ -9,7 +10,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -66,9 +72,9 @@ public final class QueryUtility {
                 tmpEvent.setContent(jsonEventObj.getString("content"));
                 tmpEvent.setEvid(jsonEventObj.getString("evid"));
 
-                // TODO : Date Formatted expect here!!
-                tmpEvent.setBegin(jsonEventObj.getString("begin"));
-                tmpEvent.setEnd(jsonEventObj.getString("end"));
+                // DONE : Date Formatted expect here!!
+                tmpEvent.setBegin(dateFormat(jsonEventObj.getString("begin")));
+                tmpEvent.setEnd(dateFormat(jsonEventObj.getString("end")));
 
                 tmpEvent.setUrl(jsonEventObj.getString("url"));
 
@@ -82,6 +88,8 @@ public final class QueryUtility {
 
             } catch (JSONException e) {
                 Log.e(LOG_TAG, "JSONException: " + e.getMessage());
+            } catch (ParseException e) {
+                Log.e(LOG_TAG, "ParseException: " + e.getMessage());
             }
 
             /** then add event to ArrayList<Event> **/
@@ -94,6 +102,13 @@ public final class QueryUtility {
 
         return allEvents;
 
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    static private String dateFormat(String universalDate) throws ParseException {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+        Date date = format.parse(universalDate);
+        return new SimpleDateFormat("dd MMMM yyyy").format(date);
     }
 
 
