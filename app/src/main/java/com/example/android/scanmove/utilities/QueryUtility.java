@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.android.scanmove.appmodel.Event;
 import com.firebase.client.DataSnapshot;
+import com.firebase.client.GenericTypeIndicator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,8 +16,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by 'Chayut' on 24/10/2559.
@@ -54,11 +58,14 @@ public final class QueryUtility {
             Log.e(LOG_TAG, e.toString());
         }
 
-        JSONArray eventsList =  propertiesObj.optJSONArray("events");
+        // DOING : check support method here
+        //JSONArray eventsList = supportQuery(msg);
+
+        JSONArray eventsList = propertiesObj.optJSONArray("events");
         // DONE : Iterate through eventsList and set all data into Event Obj
 
         // Events as an arrayList that contain all event object
-        ArrayList<Event> allEvents = new ArrayList<Event>();
+        ArrayList<Event> allEvents = new ArrayList<>();
 
         for (int index = 0; index < eventsList.length(); index++) {
 
@@ -113,6 +120,26 @@ public final class QueryUtility {
 
 
 
+    static private JSONArray supportQuery(DataSnapshot msg){
+
+        // get properties Object here return in Map type and phase to JSON object below
+        //JSONArray tmpPropertiea = new JSONObject(msg.child("properties").child("events").getValue());
+        //Log.v(LOG_TAG, "-->" + msg.child("properties").child("events").getValue());
+
+        //GenericTypeIndicator<List<String>> t = new GenericTypeIndicator<List<String>>() {};
+
+
+        JSONArray tmpEventsList = new JSONArray();
+        List list = msg.child("properties").child("events").getValue(List.class);
+        for (int i = 0; i < list.size(); i++) {
+            tmpEventsList.put(list.get(i));
+        }
+
+        Log.v(LOG_TAG, list.size() + " : " + tmpEventsList.toString());
+
+        return tmpEventsList;
+
+    }
 
 
 }
