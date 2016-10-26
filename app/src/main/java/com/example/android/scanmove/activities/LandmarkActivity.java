@@ -14,14 +14,14 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.android.scanmove.R;
 import com.example.android.scanmove.appmodel.Event;
-import com.example.android.scanmove.appmodel.Landmark;
 import com.example.android.scanmove.utilities.EventListAdapter;
 import com.example.android.scanmove.utilities.ItemClickSupport;
 import com.example.android.scanmove.utilities.QueryUtility;
@@ -58,8 +58,6 @@ public class LandmarkActivity extends AppCompatActivity {
         dialog = ProgressDialog.show(LandmarkActivity.this, "",
                 "Loading. Please wait...", true);
 
-        setContentView(R.layout.activity_landmark);
-
         if (Build.VERSION.SDK_INT > 9) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
             StrictMode.setThreadPolicy(policy);
@@ -67,7 +65,7 @@ public class LandmarkActivity extends AppCompatActivity {
 
         targetName = getIntent().getStringExtra("TARGET");
 
-        // DONE : Retrieve all data from database using FireBase here
+        // DEBUGGING : Retrieve all data from database using FireBase here
 
         Firebase.setAndroidContext(this);
         ref = new Firebase(UrlsConfig.FIREBASE_URL);
@@ -79,24 +77,39 @@ public class LandmarkActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                for (DataSnapshot msg : dataSnapshot.getChildren()) {
+                if (dataSnapshot.getValue() != null) {
 
-                    // DONE : move legacy code to new databaseUtility class from below
+                    for (DataSnapshot msg : dataSnapshot.getChildren()) {
 
-                    // Retrieve all data from FireBase using QueryUtility
-                    ArrayList<Event> mEvents = QueryUtility.extractEvents(msg);
+                        // DONE : move legacy code to new databaseUtility class from below
 
-                    // get place image for these events
-                    String placeImageUrl = mEvents.get(0).getImageUrl();
+                        // Retrieve all data from FireBase using QueryUtility
+                        ArrayList<Event> mEvents = QueryUtility.extractEvents(msg);
 
-                    // set up UI on screen
-                    try {
-                        setUpScreen(mEvents, placeImageUrl);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                        //Toast.makeText(LandmarkActivity.this, "Target : " + targetName, Toast.LENGTH_SHORT).show();
+
+                        // get place image for these events
+                        assert mEvents != null;
+                        String placeImageUrl = mEvents.get(0).getImageUrl();
+
+                        // set up UI on screen
+                        try {
+                            setUpScreen(mEvents, placeImageUrl);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
                     }
-
                 }
+
+                else {
+
+                    // if not found target, then finish activity
+                    Toast.makeText(LandmarkActivity.this, "Target Not Found", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
+                    finish(); // return to ScanQRFragment
+                }
+
             }
 
             @Override
@@ -109,14 +122,40 @@ public class LandmarkActivity extends AppCompatActivity {
              * **/
             private void setUpScreen(ArrayList<Event> mEvents, String placeImageUrl) throws IOException {
 
-                // set place cover image
+                // load and set place cover image
                 //ImageView placePicture = (ImageView) findViewById(R.id.place_image);
                 //Glide.with(LandmarkActivity.this).load(placeImageUrl).into(placePicture);
                 retrieveTask = new RetrieveDrawableImage(getBaseContext());
                 retrieveTask.execute(placeImageUrl);
 
-                // set data into RecycleView
-                setUpRecycleView(mEvents);
+                // check for no event at this place
+                if(mEvents.get(0).getEvid() != null){
+
+                    // set setContentView here for good UX and UI
+                    setContentView(R.layout.activity_landmark);
+
+                    // Lookup all no event state component and then kick it!!
+                    LinearLayout noEventView = (LinearLayout) findViewById(R.id.no_event_view);
+                    noEventView.setVisibility(View.GONE);
+
+                    // set all data into RecycleView
+                    setUpRecycleView(mEvents);
+
+                }
+                else {
+
+                    // set setContentView here for good UX and UI
+                    setContentView(R.layout.activity_landmark);
+
+                    // Lookup the RecyclerView in activity layout and get it out!!
+                    RecyclerView rvEvents = (RecyclerView) findViewById(R.id.rvEvents);
+                    rvEvents.setVisibility(View.GONE);
+
+                    // set some essential use data
+                    setUpAlterRecycleView(mEvents);
+
+
+                }
 
             }
 
@@ -151,6 +190,7 @@ public class LandmarkActivity extends AppCompatActivity {
         protected void onPostExecute(Drawable drawable) {
             super.onPostExecute(drawable);
             if (drawable != null) {
+                // when download image finish
                 dialog.dismiss();
                 setPlaceImage(drawable);
             }
@@ -165,7 +205,7 @@ public class LandmarkActivity extends AppCompatActivity {
 
         // add some animation
         YoYo.with(Techniques.FadeInDown)
-                .duration(1000)
+                .duration(750)
                 .playOn(findViewById(placePicture.getId()));
 
     }
@@ -180,7 +220,6 @@ public class LandmarkActivity extends AppCompatActivity {
         //final int FAKE_AMOUNT_SPAWN = getIntent().getStringExtra("TARGET").length();
         TextView placeThName = (TextView) findViewById(R.id.place_th_name_view);
         placeThName.setText(eventList.get(0).getmSpotThaiName());
-
 
         // Lookup the RecyclerView in activity layout
         RecyclerView rvEvents = (RecyclerView) findViewById(R.id.rvEvents);
@@ -210,6 +249,21 @@ public class LandmarkActivity extends AppCompatActivity {
 
             }
         });
+
+    }
+
+    private void setUpAlterRecycleView(ArrayList<Event> eventList){
+
+        TextView placeName = (TextView) findViewById(R.id.place_eng_name_view);
+        placeName.setText(eventList.get(0).getmSpotEngName());
+
+        TextView placeThName = (TextView) findViewById(R.id.place_th_name_view);
+        placeThName.setText(eventList.get(0).getmSpotThaiName());
+
+        // add some animation
+        YoYo.with(Techniques.BounceInUp)
+                .duration(1500)
+                .playOn(findViewById(R.id.ripple_navigation_label_alter));
 
 
     }

@@ -5,7 +5,6 @@ import android.util.Log;
 
 import com.example.android.scanmove.appmodel.Event;
 import com.firebase.client.DataSnapshot;
-import com.firebase.client.GenericTypeIndicator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -16,11 +15,9 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by 'Chayut' on 24/10/2559.
@@ -58,7 +55,7 @@ public final class QueryUtility {
             Log.e(LOG_TAG, e.toString());
         }
 
-        // DOING : check support method here
+        // DOING AND TESTING : check support method here
         //JSONArray eventsList = supportQuery(msg);
 
         JSONArray eventsList = propertiesObj.optJSONArray("events");
@@ -66,6 +63,13 @@ public final class QueryUtility {
 
         // Events as an arrayList that contain all event object
         ArrayList<Event> allEvents = new ArrayList<>();
+
+        // DONE : Check JSONArray is empty or null
+        if(eventsList == null){
+            // if no event in this location, just simply return place data only
+            allEvents.add(new Event(geometry, placeThName, placeName, placeImageUrl));
+            return allEvents;
+        }
 
         for (int index = 0; index < eventsList.length(); index++) {
 
@@ -103,7 +107,7 @@ public final class QueryUtility {
             allEvents.add(tmpEvent);
 
             // print test
-            Log.v(LOG_TAG, "Event " + (index+1) + "\n" + tmpEvent.toString());
+            //Log.v(LOG_TAG, "Event " + (index+1) + "\n" + tmpEvent.toString());
 
         }
 

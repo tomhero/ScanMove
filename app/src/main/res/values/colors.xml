@@ -19,5 +19,7 @@
     <color name="LandmarkBackgroundColor">#2196F3</color>
 
     <color name="navigationButtonColor">#CC016f54</color>
+    
+    <color name="noEventColor">#E57373</color>
 
 </resources>

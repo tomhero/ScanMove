@@ -1,8 +1,11 @@
 package com.example.android.scanmove.activities;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -42,14 +45,6 @@ public class ScanQRFragment extends Fragment implements ZXingScannerView.ResultH
 
         // getActivity() --> Same as Activity does
         // Do some shit here
-
-//        ZXingScannerView.LayoutParams lp = new ZXingScannerView.LayoutParams(ZXingScannerView.LayoutParams.MATCH_PARENT, ZXingScannerView.LayoutParams.MATCH_PARENT);
-//        lp.setMargins(0,0,0,0);
-
-
-//        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//        lp.setMargins(left, top, right, bottom);
-//        imageView.setLayoutParams(lp);
 
         // check Android 6 permission
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -114,24 +109,21 @@ public class ScanQRFragment extends Fragment implements ZXingScannerView.ResultH
     @Override
     public void handleResult(Result result) {
 
-        Intent intent = new Intent(getActivity(), LandmarkActivity.class);
-        intent.putExtra("TARGET", result.getText());
-        startActivity(intent);
+        // Check the Network Connection here
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            // Ok
+            Intent intent = new Intent(getActivity(), LandmarkActivity.class);
+            intent.putExtra("TARGET", result.getText());
+            startActivity(intent);
+        } else {
+            // No connection
+            Toast.makeText(getActivity(), "Please check your internet connection!!", Toast.LENGTH_SHORT).show();
+        }
 
-        Toast.makeText(getActivity(), "TARGET : " + result.getText(), Toast.LENGTH_SHORT).show();
-
-//        new AlertDialog.Builder(getActivity())
-//                .setTitle("Scan Result")
-//                .setMessage("TEXT : " + result.getText())
-//                .setNeutralButton("อืม", new DialogInterface.OnClickListener(){
-//                    @Override
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        // Do nothing
-//                    }
-//                })
-//                .show();
-
-        // mScan.resumeCameraPreview(this);  // set for resume
+        //Toast.makeText(getActivity(), "TARGET : " + result.getText(), Toast.LENGTH_SHORT).show();
     }
 
 }
