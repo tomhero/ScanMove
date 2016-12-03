@@ -3,15 +3,15 @@
 
     <!-- TODO: Remove or change this placeholder text -->
 
-    <string name="explore_fragment_title">Hello explore fragment</string>
+    <string name="explore_fragment_title">Explore</string>
 
-    <string name="favorite_fragment_title">Hello favorite fragment</string>
+    <string name="favorite_fragment_title">Favorite</string>
 
-    <string name="interested_fragment_title">Hello interested fragment</string>
+    <string name="interested_fragment_title">Interest</string>
 
-    <string name="map_fragment_title">Hello map fragment</string>
+    <string name="map_fragment_title">Map</string>
 
-    <string name="scan_fragment_title">Hello scan fragment</string>
+    <string name="scan_fragment_title">QR Scan</string>
 
     <string name="placeImageContentDescription"> image of QR code scan result place </string>
 
@@ -34,4 +34,134 @@
 
 
     <string name="infomation">Information</string>
+
+
+    <!-- Array for map pin -->
+    <string-array name="th_place">
+        <item>ร้าน Igear</item>
+        <item>โรงอาหารสถาปัตย์</item>
+        <item>หอประชุมประสม รังสิโรจน์ คณะสถาปัตยกรรมศาสตร์</item>
+        <item>สำนักงานคอมพิวเตอร์และคณะบริหาร</item>
+        <item>ตึกวิศวกรรมอุตาสาหการ</item>
+        <item>ตึกวิศวกรรมเครื่องกล</item>
+        <item>ตึกวิศวกรรมโยธา</item>
+        <item>ตึกวิศวกรรมการวัดคุม</item>
+        <item>อาคารปฏิบัติการรวมวิศวกรรมศาสตร์ ๒</item>
+        <item>ตึกวิศวกรรมการเกษตร</item>
+        <item>อาคารปฏิบัติการรวมวิศวกรรมศาสตร์</item>
+        <item>ตึกบูรณาการ</item>
+        <item>โรงอาหารสถาปัตย์</item>
+        <item>คณะเทคโนโลยีสารสนเทศ</item>
+        <item>ร้านป้าไม่ได้อะไรเลย</item>
+        <item>โรงอาหารฝั่งวิศวะและสถาปัตย์</item>
+        <item>ร้านกาแฟฝั่งวิศวะและสถาปัตย์</item>
+        <item>ตึกอธิการบดี</item>
+        <item>ลานพระจอม</item>
+        <item>อาคารเรียนรวมตึกพระเทพ</item>
+        <item>ตึกอนามัย</item>
+        <item>ไปรษณีย์ลาดกระบัง</item>
+        <item>โรงอาหารตึกพระเทพ</item>
+        <item>Cafe de late</item>
+        <item>สมาคมศิษย์เก่า</item>
+        <item>สนามกีฬาลาดกระบัง</item>
+        <item>โรงยิมแบดมินตัน</item>
+        <item>สระว่ายน้ำลาดกระบัง</item>
+        <item>หอพักนักศึกษา</item>
+        <item>โรงอาหารโรงแอล</item>
+        <item>ธนาคารกสิกรไทย</item>
+        <item>ธนาคารกรุงศรีอยุธยาและธนาคารกรุงไทย</item>
+        <item>ตึกจุฬาภรณ์วิลัยลักษณ์</item>
+        <item>หอประชุมจุฬาภรณ์วิลัยลักษณ์</item>
+        <item>หอประชุมเก่า</item>
+        <item>อาคารเฉลิมพระเกียรติ</item>
+        <item>หอประชุมใหม่</item>
+        <item>7-11 หอใน</item>
+        <item>โรงอาหารกลางน้ำ</item>
+        <item>ครัวสุนันท์</item>
+        <item>โรงอาหารคณะไอที</item>
+        <item>วิทยาลัยนาโนเทคโนโลยี</item>
+        <item>วิทยาลัยนานาชาติ</item>
+        <item>คณะเทคโนโลยีการเกษตรและคณะอุตสาหกรรม</item>
+        <item>โรงอาหารคณะวิทยาศาสตร์</item>
+        <item>ร้านถ่ายเอกสารและร้านขนมคณะวิทยาศาสตร์</item>
+        <item>คณะวิทยาศาสตร์</item>
+        <item>คณะครุศาสตร์</item>
+        <item>ตึกคณะเทคโนโลยีการเกษตร</item>
+        <item>โรงอาหารครุศาสตร์</item>
+        <item>โรงอาหารคณะเทคโนโลยีการเกษตร</item>
+        <item>อาคารเรียนรวม</item>
+        <item>วิศวกรรมโทรคมนาคม</item>
+        <item>ตึกคณะวิศวกรรมศาสตร์</item>
+        <item>โรงอาหารเจ้าคุณ</item>
+        <item>สถานีรถไฟพระจอมเกล้า</item>
+        <item>ตึกโหลคณะวิศวกรรมศาสตร์</item>
+        <item>สถานีรถไฟหัวตะเข้</item>
+        <item>U-Store KMITL</item>
+        <item>True Coffee</item>
+    </string-array>
+
+    <string-array name="eng_place">
+        <item>Igear Bookstore</item>
+        <item>Architect’s Canteen</item>
+        <item>Rungsiroj’s Convention Hall</item>
+        <item>Computer Service Center</item>
+        <item>Department of Industrial Engineering’s Building</item>
+        <item>Department of Mechanical Engineering’s Building</item>
+        <item>Department of Civil Engineering’s Building</item>
+        <item>Department of Instrumental Engineering’s Building</item>
+        <item>Central Engineer’s Building 2</item>
+        <item>Department of Agricultural Engineering’s Building</item>
+        <item>Central Engineer’s Building</item>
+        <!--TODO :  find this item fast as possible-->
+        <item>-</item>
+        <item>Architect’s Canteen</item>
+        <item>IT Building</item>
+        <item>Shop under Faculty of Information Technology’s Building</item>
+        <item>Architect and Engineer Canteen</item>
+        <item>Architect and Engineer Coffee Shop</item>
+        <item>Chancellor’s Building</item>
+        <item>Pra’ jom Field</item>
+        <item>Central Pratep’s Building</item>
+        <item>Sanitation’s Building</item>
+        <item>Post Office</item>
+        <item>Pratep’s Canteen</item>
+        <item>Cafe de late</item>
+        <item>KMITL’s Alumni Association</item>
+        <item>KMITL’s Stadium</item>
+        <item>Gymnasium</item>
+        <item>KMITL Pool</item>
+        <item>Student’s Dormitory</item>
+        <item>L’s Canteen</item>
+        <item>Kasikorn Bank</item>
+        <item>Krungsri and Krungthai Bank</item>
+        <item>Julaporn wilailak’s Building</item>
+        <item>Julaporn wilailak’s Convention Hall</item>
+        <item>KMITL’s Old Convention Hall</item>
+        <item>Honour’s Building</item>
+        <item>KMITL’s new Convention Hall</item>
+        <item>7 Eleven near Dorm</item>
+        <item>Middle of water canteen</item>
+        <item>Sunan’s Kitchen</item>
+        <item>IT’s Canteen</item>
+        <item>Nano-Technology College</item>
+        <item>International College</item>
+        <item>Faculty of Agricultural technology and Faculty of Industry</item>
+        <item>Faculty of Science’s Canteen</item>
+        <item>Faculty of Science\'s Xerox and Minimart</item>
+        <item>Faculty of Science</item>
+        <item>Faculty of Education</item>
+        <item>Faculty of Agricultural technology’s Building</item>
+        <item>Faculty of Education’s Canteen</item>
+        <item>Faculty of Agricultural technology’s Canteen</item>
+        <item>Central Building</item>
+        <item>Department of Telecommunication Engineering</item>
+        <item>Department of Engineering</item>
+        <item>Chaokun’s Canteen</item>
+        <item>PHRA CHOM KLAO Train Station</item>
+        <item>Campus Building</item>
+        <item>HUA TAKAE Train Station</item>
+        <item>U-Store KMITL</item>
+        <item>True Coffee</item>
+    </string-array>
+
 </resources>

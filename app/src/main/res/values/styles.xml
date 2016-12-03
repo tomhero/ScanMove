@@ -38,6 +38,7 @@
 
     <style name="MyCustomTextAppearance" parent="TextAppearance.Design.Tab">
         <item name="textAllCaps">false</item>
+        <item name="android:maxLength">10</item>
     </style>
 
     <style name="Widget.CardContent" parent="android:Widget">

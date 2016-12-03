@@ -14,20 +14,30 @@ public class MainActivity extends AppCompatActivity {
     // To inspect that user launch this activity at first time or not
     private boolean firstLaunchState = true;
 
+    private final int MY_PERMISSIONS_REQUEST_MULTIPLE_PERMISSION = 12;
+
     // In order to set launch ViewPager item on resume activity
-    private int recentViewPagerItem = 1; // Default is Second item from -> [0,1,2,3,4]
+    private int recentViewPagerItem = 2; // Default is Second item from -> [0,1,2,3,4]
 
-    private MyFragmentAdapter initAdapter(){
+    //MyFragmentAdapter adapter;
 
-        return MyFragmentAdapter.getFragmentAdapterInstance(getSupportFragmentManager(), this);
-
-    }
+//    private MyFragmentAdapter initAdapter(){
+//
+//        return MyFragmentAdapter.getFragmentAdapterInstance(getSupportFragmentManager(), this);
+//
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // Set the content of the activity to use the activity_main.xml layout file
         setContentView(R.layout.activity_main);
+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            ActivityCompat.requestPermissions(this, new String[]{
+//                            Manifest.permission.CAMERA},
+//                    MY_PERMISSIONS_REQUEST_MULTIPLE_PERMISSION);
+//        }
 
         setUpAppScreen();
 
@@ -75,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         // Create an adapter that knows which fragment should be shown on each page
-        MyFragmentAdapter adapter = initAdapter();
+        //adapter = initAdapter();
+        MyFragmentAdapter adapter = new MyFragmentAdapter(getSupportFragmentManager(), this);
 
         // Set the adapter onto the view pager
         viewPager.setAdapter(adapter);
@@ -95,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
     }
+
 
 
 }

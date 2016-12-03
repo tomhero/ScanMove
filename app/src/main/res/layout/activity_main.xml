@@ -15,11 +15,10 @@
         android:layout_weight="1"
         />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="@color/colorPrimary"
-        />
+    <!--<View-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="4dp"-->
+        <!--android:background="@color/cardEventColor"/>-->
 
     <FrameLayout
         android:layout_width="match_parent"

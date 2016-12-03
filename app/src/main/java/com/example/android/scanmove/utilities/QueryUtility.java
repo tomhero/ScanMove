@@ -47,22 +47,24 @@ public final class QueryUtility {
         JSONObject propertiesObj = new JSONObject((Map) msg.child("properties").getValue());
 
         String placeImageUrl = null, placeName = null, placeThName = null;
-        try {
-            placeImageUrl = propertiesObj.getString("image");
-            placeName = propertiesObj.getString("place");
-            placeThName = propertiesObj.getString("th_name");
-        } catch (JSONException e) {
-            Log.e(LOG_TAG, e.toString());
-        }
+        placeImageUrl = propertiesObj.optString("image");
+        placeName = propertiesObj.optString("place");
+        placeThName = propertiesObj.optString("th_name");
 
-        // DOING AND TESTING : check support method here
+        //  FIXME TESTING AND FAIL T^T : check support method here
         //JSONArray eventsList = supportQuery(msg);
-
-        JSONArray eventsList = propertiesObj.optJSONArray("events");
-        // DONE : Iterate through eventsList and set all data into Event Obj
 
         // Events as an arrayList that contain all event object
         ArrayList<Event> allEvents = new ArrayList<>();
+
+        JSONArray eventsList = null;
+        try {
+            eventsList = propertiesObj.getJSONArray("events");
+        } catch (JSONException e) {
+            // if no event in this location, just simply return place data only
+            allEvents.add(new Event(geometry, placeThName, placeName, placeImageUrl));
+            return allEvents;
+        }
 
         // DONE : Check JSONArray is empty or null
         if(eventsList == null){
@@ -71,31 +73,36 @@ public final class QueryUtility {
             return allEvents;
         }
 
+        // DONE : Iterate through eventsList and set all data into Event Obj
         for (int index = 0; index < eventsList.length(); index++) {
 
             // temporary single event obj here
             Event tmpEvent = new Event(geometry, placeThName, placeName, placeImageUrl);
             try {
-                JSONObject jsonEventObj = eventsList.getJSONObject(index);
+                JSONObject jsonEventObj = eventsList.optJSONObject(index);
                 // set all data into tmp event
-                tmpEvent.setName(jsonEventObj.getString("name"));
-                tmpEvent.setCover(jsonEventObj.getString("cover"));
-                tmpEvent.setContent(jsonEventObj.getString("content"));
-                tmpEvent.setEvid(jsonEventObj.getString("evid"));
+                tmpEvent.setName(jsonEventObj.optString("name"));
+                tmpEvent.setCover(jsonEventObj.optString("cover"));
+                tmpEvent.setContent(jsonEventObj.optString("content"));
+                tmpEvent.setEvid(jsonEventObj.optString("evid"));
 
                 // DONE : Date Formatted expect here!!
-                tmpEvent.setBegin(dateFormat(jsonEventObj.getString("begin")));
-                tmpEvent.setEnd(dateFormat(jsonEventObj.getString("end")));
+                tmpEvent.setBegin(dateFormat(jsonEventObj.optString("begin")));
+                tmpEvent.setEnd(dateFormat(jsonEventObj.optString("end")));
 
-                tmpEvent.setUrl(jsonEventObj.getString("url"));
+                tmpEvent.setUrl(jsonEventObj.optString("url"));
 
                 // TODO : Remember that tag feature will available later
-                JSONArray jsonArray = jsonEventObj.optJSONArray("tag");
-                String[] tags = new String[jsonArray.length()];
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    tags[i]= jsonArray.getString(i);
+                JSONArray jsonArray = jsonEventObj.getJSONArray("tag");
+                if (jsonArray != null){
+                    // check if no any tag or not
+                    String[] tags = new String[jsonArray.length()];
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        tags[i]= jsonArray.getString(i);
+                    }
+                    tmpEvent.setTag(tags);
                 }
-                tmpEvent.setTag(tags);
+
 
             } catch (JSONException e) {
                 Log.e(LOG_TAG, "JSONException: " + e.getMessage());

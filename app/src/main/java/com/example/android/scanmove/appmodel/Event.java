@@ -3,6 +3,8 @@ package com.example.android.scanmove.appmodel;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+import com.example.android.scanmove.utilities.UrlsConfig;
+
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
@@ -124,7 +126,7 @@ public class Event extends Landmark {
             fakeEvent.setBegin(String.format("20%02d/%02d/%02d", i - 1, i + 1, i));
             fakeEvent.setEnd(String.format("20%02d/%02d/%02d", i - 1, i + 1, i + 3));
             fakeEvent.setEvid("E000" + i);
-            fakeEvent.setCover("https://www.sample.in.th/fakeEvent" + i + ".jpg");
+            fakeEvent.setCover(UrlsConfig.DUMMY_COVERIMAGE_URL);
             fakeEvent.setName("Event " + i);
             fakeEvent.setTag(null); // TODO: someday/some month/2559 'Expect to tag the Event'
             fakeEvent.setUrl("https://www.officialpage.in.th/fakeEvent" + i + ".html");

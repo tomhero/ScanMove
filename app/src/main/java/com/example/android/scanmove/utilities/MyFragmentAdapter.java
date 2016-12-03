@@ -1,6 +1,5 @@
 package com.example.android.scanmove.utilities;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
@@ -11,12 +10,12 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ImageSpan;
 
+import com.example.android.scanmove.R;
 import com.example.android.scanmove.activities.ExploreFragment;
 import com.example.android.scanmove.activities.FavoritePlaceFragment;
 import com.example.android.scanmove.activities.InterestedFragment;
 import com.example.android.scanmove.activities.MainActivity;
 import com.example.android.scanmove.activities.MapFragment;
-import com.example.android.scanmove.R;
 import com.example.android.scanmove.activities.ScanQRFragment;
 
 /**
@@ -27,35 +26,35 @@ import com.example.android.scanmove.activities.ScanQRFragment;
 
 public class MyFragmentAdapter extends FragmentPagerAdapter {
 
-    @SuppressLint("StaticFieldLeak")
-    private volatile static MyFragmentAdapter mFragmentAdapterInstance;
+//    @SuppressLint("StaticFieldLeak")
+//    private volatile static MyFragmentAdapter mFragmentAdapterInstance;
 
     private int[] imageResId = {
-            R.drawable.qr_code,
-            R.drawable.star,
-            R.drawable.placeholder,
-            R.drawable.heart,
-            R.drawable.rocket
+            R.drawable.ic_qr_code,
+            R.drawable.ic_fav_stroke,
+            R.drawable.ic_star,
+            R.drawable.ic_map,
+            R.drawable.ic_compass_with_white_needles
     };
 
     private Context context;
     private static final int FRAGMENT_VIEW_COUNT = 5;
 
-    private MyFragmentAdapter(FragmentManager fm, Context context) {
+     public MyFragmentAdapter(FragmentManager fm, Context context) {
         super(fm);
         this.context = context;
     }
 
-    public static MyFragmentAdapter getFragmentAdapterInstance(FragmentManager fm, Context context){
-        if (mFragmentAdapterInstance == null) {
-            synchronized (MyFragmentAdapter.class){
-                if (mFragmentAdapterInstance == null) {
-                    mFragmentAdapterInstance = new MyFragmentAdapter(fm, context);
-                }
-            }
-        }
-        return mFragmentAdapterInstance;
-    }
+//    public static MyFragmentAdapter getFragmentAdapterInstance(FragmentManager fm, Context context){
+//        if (mFragmentAdapterInstance == null) {
+//            synchronized (MyFragmentAdapter.class){
+//                if (mFragmentAdapterInstance == null) {
+//                    mFragmentAdapterInstance = new MyFragmentAdapter(fm, context);
+//                }
+//            }
+//        }
+//        return mFragmentAdapterInstance;
+//    }
 
 
     /**
@@ -68,9 +67,9 @@ public class MyFragmentAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position){
             case 0 : return new ScanQRFragment();
-            case 1 : return new InterestedFragment();
-            case 2 : return new MapFragment();
-            case 3 : return new FavoritePlaceFragment();
+            case 2 : return new InterestedFragment();
+            case 3 : return new MapFragment();
+            case 1 : return new FavoritePlaceFragment();
             default: return new ExploreFragment();
         }
     }
@@ -108,11 +107,20 @@ public class MyFragmentAdapter extends FragmentPagerAdapter {
         Drawable image = ContextCompat.getDrawable(context, imageResId[position]);
         image.setBounds(0, 0, image.getIntrinsicWidth(), image.getIntrinsicHeight());
 
-        SpannableString sb = new SpannableString(" ");
+        String pageName;
+        switch (position){
+            case 0 : pageName = context.getString(R.string.scan_fragment_title); break;
+            case 1 : pageName = context.getString(R.string.favorite_fragment_title); break;
+            case 2 : pageName = context.getString(R.string.interested_fragment_title); break;
+            case 3 : pageName = context.getString(R.string.map_fragment_title); break;
+            default: pageName = context.getString(R.string.explore_fragment_title);
+        }
+
+        SpannableString TabTitle = new SpannableString(" \n" + pageName) ;
 
         ImageSpan imageSpan = new ImageSpan(image, ImageSpan.ALIGN_BOTTOM);
-        sb.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        TabTitle.setSpan(imageSpan, 0, 1, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        return sb;
+        return TabTitle;
     }
 }

@@ -136,7 +136,7 @@ public class LandmarkActivity extends AppCompatActivity {
 
                     // Lookup all no event state component and then kick it!!
                     LinearLayout noEventView = (LinearLayout) findViewById(R.id.no_event_view);
-                    noEventView.setVisibility(View.GONE);
+                    noEventView.setVisibility(View.GONE); // some magic fragment here!! 9_9
 
                     // set all data into RecycleView
                     setUpRecycleView(mEvents);
