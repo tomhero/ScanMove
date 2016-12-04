@@ -147,13 +147,13 @@ public class ExploreFragment extends Fragment {
 
                 if (dataSnapshot.getValue() != null) {
 
-                    int counter = 0;
+                    //int counter = 0;
 
                     for (DataSnapshot msg : dataSnapshot.getChildren()) {
 
-                        if (counter > 12) {
-                            break;
-                        }
+//                        if (counter > 12) {
+//                            break;
+//                        }
 
                         // Retrieve all data from FireBase using QueryUtility
                         ArrayList<Event> mEvents = QueryUtility.extractEvents(msg);
@@ -161,7 +161,7 @@ public class ExploreFragment extends Fragment {
                         // DONE : add mEvents to allEvents list by using addAll(Collection<? extends E> c)
                         allEventTmp.addAll(mEvents);
 
-                        counter++;
+                        //counter++;
 
                         Log.i(LOG_TAG, "allEvents Size : " + allEventTmp.size());
 

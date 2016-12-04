@@ -4,16 +4,11 @@
     package="com.example.android.scanmove">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
@@ -23,20 +18,24 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCIMXtQUPjr52Et08erZhaNkkAgw-E_YRQ"/>
+            android:value="AIzaSyCIMXtQUPjr52Et08erZhaNkkAgw-E_YRQ" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".activities.MainActivity"
+        <activity
+            android:name=".activities.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.LandmarkActivity"
-            android:screenOrientation="portrait"/>
-        <!--android:theme="@android:style/Theme.NoTitleBar.Fullscreen"-->
+        <activity
+            android:name=".activities.LandmarkActivity"
+            android:screenOrientation="portrait" />
+        <!-- android:theme="@android:style/Theme.NoTitleBar.Fullscreen" -->
         <activity
             android:name=".activities.Splash"
             android:screenOrientation="portrait">
@@ -46,14 +45,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.InformationActivity"
+        <activity
+            android:name=".activities.InformationActivity"
             android:parentActivityName=".activities.LandmarkActivity">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.LandmarkActivity"/>
-
+                android:value=".activities.LandmarkActivity" />
         </activity>
+        <activity android:name=".activities.NavigationActivity"></activity>
     </application>
 
 </manifest>

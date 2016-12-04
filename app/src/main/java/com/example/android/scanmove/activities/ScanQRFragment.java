@@ -126,8 +126,8 @@ public class ScanQRFragment extends Fragment implements ZXingScannerView.ResultH
 
         // To start or resume camera when fragment is visible
         if (!triggered && isVisibleToUser) {
-            //startCameraInstance();
-            //mScan.startCamera();
+            startCameraInstance();
+            mScan.startCamera();
             triggered = true;
         } else if (triggered && isVisibleToUser) {
             mScan.resumeCameraPreview(this);
@@ -142,7 +142,7 @@ public class ScanQRFragment extends Fragment implements ZXingScannerView.ResultH
 
          //check Android 6 permission
          //isAdded() -> to check the fragment is already detached or not
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !isAdded()) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (getActivity().getApplicationContext().checkSelfPermission(android.Manifest.permission.CAMERA)
                     == PackageManager.PERMISSION_GRANTED) {
 

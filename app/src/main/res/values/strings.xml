@@ -16,7 +16,7 @@
     <string name="placeImageContentDescription"> image of QR code scan result place </string>
 
     <string name="infoIconContentDescription"> for indicate th direction </string>
-    
+
     <string name="arrowIconContentDescription"> for more information of the event  </string>
 
     <!-- Dummy data -->
@@ -163,5 +163,6 @@
         <item>U-Store KMITL</item>
         <item>True Coffee</item>
     </string-array>
+    <string name="title_activity_navigation">Map</string>
 
 </resources>

@@ -22,6 +22,17 @@
             android:contentDescription="@string/placeImageContentDescription"
             android:scaleType="centerCrop" />
 
+        <!-- DONE : change background color  -->
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/landmark_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@drawable/gradient_tint"
+            app:layout_collapseMode="pin"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+             />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="72dp"
@@ -61,6 +72,17 @@
             android:paddingTop="4dp"
             android:textColor="@color/placeEngColor"
             android:textSize="24sp" />
+
+        <ImageButton
+            android:layout_marginBottom="12dp"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/ic_favorite_border_black_24dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/place_love_btn"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@id/place_icon"/>
 
     </RelativeLayout>
 

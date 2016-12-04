@@ -1,17 +1,13 @@
 package com.example.android.scanmove.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,7 +20,6 @@ import com.example.android.scanmove.R;
 import com.example.android.scanmove.appmodel.Event;
 
 import org.parceler.Parcels;
-import org.w3c.dom.Text;
 
 public class InformationActivity extends AppCompatActivity {
 
@@ -76,7 +71,8 @@ public class InformationActivity extends AppCompatActivity {
 
     }
 
-    private void setUpAllInfo(Event event) {
+    @SuppressLint("SetTextI18n")
+    private void setUpAllInfo(final Event event) {
 
         TextView fullName = (TextView) findViewById(R.id.full_event_name);
         TextView fullInfo = (TextView) findViewById(R.id.full_event_info);
@@ -113,11 +109,27 @@ public class InformationActivity extends AppCompatActivity {
         });
 
         MaterialRippleLayout navLabel = (MaterialRippleLayout) findViewById(R.id.ripple_navigation_label);
-        // add some animation to label
+        // DONE : add some animation to label
         YoYo.with(Techniques.Shake)
                 .delay(2500)
                 .duration(1000)
                 .playOn(findViewById(navLabel.getId()));
+
+        navLabel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // FIXME : use mock location -3-
+                Intent coordinate = new Intent(InformationActivity.this, NavigationActivity.class);
+                coordinate.putExtra("MyLat", 13.730258);
+                coordinate.putExtra("MyLng", 100.77173);
+
+                coordinate.putExtra("DestinationLat", event.getCoordinates().get(0)); // from firebase
+                coordinate.putExtra("DestinationLng", event.getCoordinates().get(1)); // from firebase
+                startActivity(coordinate);
+
+            }
+        });
 
         final FloatingActionButton interestButton = (FloatingActionButton) findViewById(R.id.interest_button);
         interestButton.setOnClickListener(new View.OnClickListener() {

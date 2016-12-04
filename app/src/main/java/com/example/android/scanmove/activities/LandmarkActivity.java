@@ -3,21 +3,29 @@ package com.example.android.scanmove.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.balysv.materialripple.MaterialRippleLayout;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.android.scanmove.R;
@@ -31,6 +39,10 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationServices;
 
 import org.parceler.Parcels;
 
@@ -39,7 +51,8 @@ import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class LandmarkActivity extends AppCompatActivity {
+public class LandmarkActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
     private final static String LOG_TAG = LandmarkActivity.class.getSimpleName();
 
@@ -49,11 +62,19 @@ public class LandmarkActivity extends AppCompatActivity {
     private Firebase ref;
     private Query qRef;
 
+    private ImageButton loveButton;
+
     private RetrieveDrawableImage retrieveTask;
+
+    protected GoogleApiClient googleApiClient;
+
+    protected Location mLastLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        buildGoogleApiClient();
 
         dialog = ProgressDialog.show(LandmarkActivity.this, "",
                 "Loading. Please wait...", true);
@@ -134,6 +155,8 @@ public class LandmarkActivity extends AppCompatActivity {
                     // set setContentView here for good UX and UI
                     setContentView(R.layout.activity_landmark);
 
+                    setUpToolBar();
+
                     // Lookup all no event state component and then kick it!!
                     LinearLayout noEventView = (LinearLayout) findViewById(R.id.no_event_view);
                     noEventView.setVisibility(View.GONE); // some magic fragment here!! 9_9
@@ -146,6 +169,8 @@ public class LandmarkActivity extends AppCompatActivity {
 
                     // set setContentView here for good UX and UI
                     setContentView(R.layout.activity_landmark);
+
+                    setUpToolBar();
 
                     // Lookup the RecyclerView in activity layout and get it out!!
                     RecyclerView rvEvents = (RecyclerView) findViewById(R.id.rvEvents);
@@ -208,6 +233,22 @@ public class LandmarkActivity extends AppCompatActivity {
                 .duration(750)
                 .playOn(findViewById(placePicture.getId()));
 
+        // love button here
+        loveButton = (ImageButton) findViewById(R.id.place_love_btn);
+        loveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // TODO : add some behavior to this button!!
+
+                loveButton.setImageResource(R.drawable.ic_favorite_black_24dp);
+
+                YoYo.with(Techniques.ZoomIn)
+                        .duration(400)
+                        .playOn(findViewById(loveButton.getId()));
+
+            }
+        });
+
     }
 
     private void setUpRecycleView(ArrayList<Event> eventList) {
@@ -252,7 +293,7 @@ public class LandmarkActivity extends AppCompatActivity {
 
     }
 
-    private void setUpAlterRecycleView(ArrayList<Event> eventList){
+    private void setUpAlterRecycleView(final ArrayList<Event> eventList){
 
         TextView placeName = (TextView) findViewById(R.id.place_eng_name_view);
         placeName.setText(eventList.get(0).getmSpotEngName());
@@ -260,11 +301,114 @@ public class LandmarkActivity extends AppCompatActivity {
         TextView placeThName = (TextView) findViewById(R.id.place_th_name_view);
         placeThName.setText(eventList.get(0).getmSpotThaiName());
 
+        MaterialRippleLayout navLabel = (MaterialRippleLayout) findViewById(R.id.ripple_navigation_label_alter);
         // add some animation
         YoYo.with(Techniques.BounceInUp)
                 .duration(1500)
                 .playOn(findViewById(R.id.ripple_navigation_label_alter));
 
+        // add on click action
+        navLabel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // FIXME : use mock location -3-
+                Intent coordinate = new Intent(LandmarkActivity.this, NavigationActivity.class);
+                coordinate.putExtra("MyLat", 13.730258);
+                coordinate.putExtra("MyLng", 100.77173);
+
+                coordinate.putExtra("DestinationLat", eventList.get(0).getCoordinates().get(0)); // from firebase
+                coordinate.putExtra("DestinationLng", eventList.get(0).getCoordinates().get(1)); // from firebase
+                startActivity(coordinate);
+
+            }
+        });
+
+
+    }
+
+    private void setUpToolBar(){
+
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.landmark_toolbar);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Landmark");
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                // when click black left arrow button
+                finish();
+
+            }
+        });
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addConnectionCallbacks(this)
+                .addApi(LocationServices.API)
+                .build();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        googleApiClient.connect();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (googleApiClient.isConnected()) {
+            googleApiClient.disconnect();
+        }
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        } else {
+            mLastLocation = LocationServices.FusedLocationApi.getLastLocation(googleApiClient);
+        }
+
+        if(mLastLocation != null){
+
+            Toast.makeText(this, "mastLocation get!! : " + mLastLocation.getLatitude(), Toast.LENGTH_SHORT).show();
+
+        }
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+        Log.i(LOG_TAG, "Suspended for " + i + "second");
+        googleApiClient.connect();
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
 
     }
 
