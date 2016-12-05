@@ -90,7 +90,7 @@ public final class QueryUtility {
                 tmpEvent.setBegin(dateFormat(jsonEventObj.optString("begin")));
                 tmpEvent.setEnd(dateFormat(jsonEventObj.optString("end")));
 
-                tmpEvent.setUrl(jsonEventObj.optString("url"));
+                tmpEvent.setUrl(jsonEventObj.getString("url"));
 
                 // TODO : Remember that tag feature will available later
                 JSONArray jsonArray = jsonEventObj.getJSONArray("tag");

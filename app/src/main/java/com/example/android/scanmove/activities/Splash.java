@@ -18,9 +18,9 @@ public class Splash extends Activity {
         super.onCreate(savedInstanceState);
 
         // TO skip Splash screen
-        Intent intent = new Intent(Splash.this, MainActivity.class);
-        startActivity(intent);
-        finish();
+        //Intent intent = new Intent(Splash.this, MainActivity.class);
+        //startActivity(intent);
+        //finish();
 
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_splash);

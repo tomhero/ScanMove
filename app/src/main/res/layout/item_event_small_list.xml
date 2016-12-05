@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/frame_interest_event"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:layout_gravity="center"
+        android:background="@color/colorTint"/>
+
+    <TextView
+        android:id="@+id/list_event_name"
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:background="@color/colorTint"
+        android:gravity="center"
+        android:maxLines="1"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="10"
+        android:shadowColor="@color/colorPrimary"/>
+
+
+</RelativeLayout>

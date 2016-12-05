@@ -18,8 +18,12 @@ import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.example.android.scanmove.R;
 import com.example.android.scanmove.appmodel.Event;
+import com.example.android.scanmove.utilities.GoogleMapUtility;
+import com.example.android.scanmove.utilities.ReadWriteXMLUtility;
 
 import org.parceler.Parcels;
+
+import java.util.ArrayList;
 
 public class InformationActivity extends AppCompatActivity {
 
@@ -121,8 +125,8 @@ public class InformationActivity extends AppCompatActivity {
 
                 // FIXME : use mock location -3-
                 Intent coordinate = new Intent(InformationActivity.this, NavigationActivity.class);
-                coordinate.putExtra("MyLat", 13.730258);
-                coordinate.putExtra("MyLng", 100.77173);
+                coordinate.putExtra("MyLat", GoogleMapUtility.fakeLatitude);
+                coordinate.putExtra("MyLng", GoogleMapUtility.fakeLongtitide);
 
                 coordinate.putExtra("DestinationLat", event.getCoordinates().get(0)); // from firebase
                 coordinate.putExtra("DestinationLng", event.getCoordinates().get(1)); // from firebase
@@ -131,18 +135,51 @@ public class InformationActivity extends AppCompatActivity {
             }
         });
 
-        final FloatingActionButton interestButton = (FloatingActionButton) findViewById(R.id.interest_button);
-        interestButton.setOnClickListener(new View.OnClickListener() {
+        setfavButton(event.getEvid());
+
+    }
+
+    private void setfavButton(final String eventId){
+
+        // love button here
+        final FloatingActionButton favButton = (FloatingActionButton) findViewById(R.id.interest_button);
+
+        if(isfavor(eventId)){
+            favButton.setImageResource(R.drawable.star);
+        } else {
+            favButton.setImageResource(R.drawable.ic_star_border);
+        }
+
+        favButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                interestButton.setImageResource(R.drawable.star);
+
+                // DONE : add some behavior to this button!!
+                if(isfavor(eventId)){
+                    // DONE : add delete interested action here!!
+                    ReadWriteXMLUtility.deleteInterested(InformationActivity.this, eventId);
+                    favButton.setImageResource(R.drawable.ic_star_border);
+                }
+                else {
+                    ReadWriteXMLUtility.addInterestEvent(InformationActivity.this, eventId);
+                    favButton.setImageResource(R.drawable.star);
+                }
 
                 YoYo.with(Techniques.RotateIn)
-                        .duration(500)
-                        .playOn(findViewById(interestButton.getId()));
+                        .duration(320)
+                        .playOn(findViewById(favButton.getId()));
 
             }
         });
 
     }
+
+    private boolean isfavor(String eventName){
+
+        ArrayList<String> favList = ReadWriteXMLUtility.getAllInterestEvent(this);
+
+        return favList.contains(eventName);
+
+    }
+
 }

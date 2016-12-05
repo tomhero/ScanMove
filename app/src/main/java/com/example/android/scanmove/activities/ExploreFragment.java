@@ -2,18 +2,14 @@ package com.example.android.scanmove.activities;
 
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,17 +18,15 @@ import com.example.android.scanmove.R;
 import com.example.android.scanmove.appmodel.Event;
 import com.example.android.scanmove.utilities.EventBigListAdapter;
 import com.example.android.scanmove.utilities.ItemClickSupport;
-import com.example.android.scanmove.utilities.QueryUtility;
-import com.example.android.scanmove.utilities.UrlsConfig;
-import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
-import com.firebase.client.ValueEventListener;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+
+import jp.wasabeef.recyclerview.adapters.ScaleInAnimationAdapter;
 
 
 /**
@@ -45,12 +39,10 @@ public class ExploreFragment extends Fragment {
 
     private Firebase ref;
     private Query qRef;
-    private ArrayList<Event> allEvents, fakeEvents;
     private EventBigListAdapter adapter;
     private String LOG_TAG = ExploreFragment.class.getSimpleName();
     FragmentActivity listener;
     View rootView;
-    ProgressDialog dialog;
 
 
     public ExploreFragment() {
@@ -80,11 +72,7 @@ public class ExploreFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //fakeEvents = new Event().createFakeEventList(20);
-
         // DONE : Instantiate variable here
-        // Initialize allEvents
-        allEvents = new ArrayList<Event>();
 
 
     }
@@ -117,76 +105,11 @@ public class ExploreFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // DONE : Query process below
-        dialog = ProgressDialog.show(getActivity(), "",
-                "Loading. Please wait...", true);
-        queryFromFireBase();
+        adapter = new EventBigListAdapter(getActivity(), MainActivity.allEvents);
+        setUpAdapter();
 
     }
 
-    private void queryFromFireBase() {
-
-       final ArrayList<Event> allEventTmp = new ArrayList<>();
-
-        /** Query process goes here **/
-        if (Build.VERSION.SDK_INT > 9) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-        }
-
-        Firebase.setAndroidContext(getActivity());
-        ref = new Firebase(UrlsConfig.FIREBASE_URL);
-
-        qRef = ref.orderByChild("properties");
-
-        // DONE : Query data from Fire base below
-        // TODO : remove counter when update data in FireBase database
-        qRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                if (dataSnapshot.getValue() != null) {
-
-                    //int counter = 0;
-
-                    for (DataSnapshot msg : dataSnapshot.getChildren()) {
-
-//                        if (counter > 12) {
-//                            break;
-//                        }
-
-                        // Retrieve all data from FireBase using QueryUtility
-                        ArrayList<Event> mEvents = QueryUtility.extractEvents(msg);
-
-                        // DONE : add mEvents to allEvents list by using addAll(Collection<? extends E> c)
-                        allEventTmp.addAll(mEvents);
-
-                        //counter++;
-
-                        Log.i(LOG_TAG, "allEvents Size : " + allEventTmp.size());
-
-                    }
-
-                    allEvents = allEventTmp;
-
-                    adapter = new EventBigListAdapter(getActivity(), allEvents);
-
-                    setUpAdapter();
-
-                    dialog.dismiss();
-
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
-        });
-
-    }
 
     private void setUpAdapter(){
 
@@ -194,7 +117,7 @@ public class ExploreFragment extends Fragment {
         RecyclerView rvEvents = (RecyclerView) rootView.findViewById(R.id.rvBigEvents);
 
         // Attach the adapter to the RecyclerView to populate items
-        rvEvents.setAdapter(adapter);
+        rvEvents.setAdapter(new ScaleInAnimationAdapter(adapter));
 
         // Set layout manager to position the items
         rvEvents.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -204,7 +127,7 @@ public class ExploreFragment extends Fragment {
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 
                 // DONE : change "fakeEvents" to "allEvents" when test success
-                Event event = allEvents.get(position);
+                Event event = MainActivity.allEvents.get(position);
 
                 Context context = v.getContext();
                 Intent intent = new Intent(context, InformationActivity.class);
@@ -214,6 +137,16 @@ public class ExploreFragment extends Fragment {
             }
         });
 
+    }
+
+    private ArrayList<Event>  cleanEventList(ArrayList<Event> list){
+        for(Iterator<Event> i = list.iterator(); i.hasNext(); ) {
+            Event item = i.next();
+            if (item.getName() == null) {
+                i.remove();
+            }
+        }
+        return list;
     }
 
 }

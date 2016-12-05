@@ -9,6 +9,7 @@ import org.parceler.Parcel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by 'Chayut' on 20/10/2559.
@@ -151,5 +152,27 @@ public class Event extends Landmark {
                 "name -> %s \n" +
                 "url -> %s \n" +
                 "tag -> %s ", evid, content, cover, begin, end, name, url, Arrays.toString(tag));
+    }
+
+    public static ArrayList<Event> searchInterestEvent(List<String> eventsId, ArrayList<Event> allEventList){
+
+        ArrayList<Event> tmpEventList = new ArrayList<>();
+
+        for (String evId: eventsId) {
+
+            for (Event ev: allEventList) {
+
+                if(ev.getEvid().equals(evId)){
+
+                    tmpEventList.add(ev);
+
+                }
+
+            }
+
+        }
+
+        return tmpEventList;
+
     }
 }

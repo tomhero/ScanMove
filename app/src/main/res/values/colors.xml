@@ -24,4 +24,8 @@
 
     <color name="colorLove">#FF4081</color>
 
+    <color name="colorPin">#FF5252</color>
+
+    <color name="colorHilight">#FFF59D</color>
+
 </resources>

@@ -1,12 +1,26 @@
 package com.example.android.scanmove.activities;
 
+import android.app.ProgressDialog;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.example.android.scanmove.R;
+import com.example.android.scanmove.appmodel.Event;
 import com.example.android.scanmove.utilities.MyFragmentAdapter;
+import com.example.android.scanmove.utilities.QueryUtility;
+import com.example.android.scanmove.utilities.UrlsConfig;
+import com.firebase.client.DataSnapshot;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
+import com.firebase.client.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -18,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
 
     // In order to set launch ViewPager item on resume activity
     private int recentViewPagerItem = 2; // Default is Second item from -> [0,1,2,3,4]
+
+    private Firebase ref;
+    private Query qRef;
+    public static ArrayList<Event> allEvents;
+
+    ProgressDialog dialog;
 
     //MyFragmentAdapter adapter;
 
@@ -39,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 //                    MY_PERMISSIONS_REQUEST_MULTIPLE_PERMISSION);
 //        }
 
+
         setUpAppScreen();
 
         firstLaunchState = false;
@@ -57,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        queryAllEvent();
 
         if(!firstLaunchState){
             setUpAppScreen();
@@ -106,6 +129,76 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
     }
+
+    private void queryAllEvent(){
+
+        final ArrayList<Event> allEventTmp = new ArrayList<>();
+
+        dialog = ProgressDialog.show(this, "",
+                "Loading. Please wait...", true);
+
+        /** Query process goes here **/
+        if (Build.VERSION.SDK_INT > 9) {
+            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
+
+        Firebase.setAndroidContext(this);
+        ref = new Firebase(UrlsConfig.FIREBASE_URL);
+
+        qRef = ref.orderByChild("properties");
+
+        // DONE : Query data from Fire base below
+        // DONE : remove counter when update data in FireBase database
+        qRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.getValue() != null) {
+
+                    for (DataSnapshot msg : dataSnapshot.getChildren()) {
+
+
+                        // Retrieve all data from FireBase using QueryUtility
+                        ArrayList<Event> mEvents = QueryUtility.extractEvents(msg);
+
+                        // DONE : add mEvents to allEvents list by using addAll(Collection<? extends E> c)
+                        allEventTmp.addAll(mEvents);
+
+                        //Log.i(LOG_TAG, "allEvents Size : " + allEventTmp.size());
+
+                    }
+
+                    // DONE : check empty event here
+                    allEvents = cleanEventList(allEventTmp);
+
+                    // DONE set up interest listView after querying
+                    InterestedFragment.setUpInterestList(MainActivity.this);
+
+                    dialog.dismiss();
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+    }
+
+    private ArrayList<Event>  cleanEventList(ArrayList<Event> list){
+        for(Iterator<Event> i = list.iterator(); i.hasNext(); ) {
+            Event item = i.next();
+            if (item.getName() == null) {
+                i.remove();
+            }
+        }
+        return list;
+    }
+
 
 
 

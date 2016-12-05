@@ -69,9 +69,11 @@
             android:layout_above="@id/place_th_name_view"
             android:layout_toRightOf="@id/place_icon"
             android:maxLines="1"
+            android:maxLength="17"
             android:paddingTop="4dp"
             android:textColor="@color/placeEngColor"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            android:ellipsize="end"/>
 
         <ImageButton
             android:layout_marginBottom="12dp"

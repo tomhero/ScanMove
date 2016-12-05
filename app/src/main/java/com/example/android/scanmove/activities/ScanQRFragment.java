@@ -125,7 +125,7 @@ public class ScanQRFragment extends Fragment implements ZXingScannerView.ResultH
         //Log.i(LOG_TAG, "UserVisibleHint -> " + isVisibleToUser);
 
         // To start or resume camera when fragment is visible
-        if (!triggered && isVisibleToUser) {
+        if (!triggered && isVisibleToUser && isAdded()) {
             startCameraInstance();
             mScan.startCamera();
             triggered = true;

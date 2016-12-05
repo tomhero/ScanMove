@@ -31,8 +31,10 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.example.android.scanmove.R;
 import com.example.android.scanmove.appmodel.Event;
 import com.example.android.scanmove.utilities.EventListAdapter;
+import com.example.android.scanmove.utilities.GoogleMapUtility;
 import com.example.android.scanmove.utilities.ItemClickSupport;
 import com.example.android.scanmove.utilities.QueryUtility;
+import com.example.android.scanmove.utilities.ReadWriteXMLUtility;
 import com.example.android.scanmove.utilities.UrlsConfig;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
@@ -182,6 +184,9 @@ public class LandmarkActivity extends AppCompatActivity implements GoogleApiClie
 
                 }
 
+                //set up love button
+                setLoveButton(mEvents.get(0).getmSpotEngName());
+
             }
 
         });
@@ -233,21 +238,6 @@ public class LandmarkActivity extends AppCompatActivity implements GoogleApiClie
                 .duration(750)
                 .playOn(findViewById(placePicture.getId()));
 
-        // love button here
-        loveButton = (ImageButton) findViewById(R.id.place_love_btn);
-        loveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // TODO : add some behavior to this button!!
-
-                loveButton.setImageResource(R.drawable.ic_favorite_black_24dp);
-
-                YoYo.with(Techniques.ZoomIn)
-                        .duration(400)
-                        .playOn(findViewById(loveButton.getId()));
-
-            }
-        });
 
     }
 
@@ -314,8 +304,8 @@ public class LandmarkActivity extends AppCompatActivity implements GoogleApiClie
 
                 // FIXME : use mock location -3-
                 Intent coordinate = new Intent(LandmarkActivity.this, NavigationActivity.class);
-                coordinate.putExtra("MyLat", 13.730258);
-                coordinate.putExtra("MyLng", 100.77173);
+                coordinate.putExtra("MyLat", GoogleMapUtility.fakeLatitude);
+                coordinate.putExtra("MyLng", GoogleMapUtility.fakeLongtitide);
 
                 coordinate.putExtra("DestinationLat", eventList.get(0).getCoordinates().get(0)); // from firebase
                 coordinate.putExtra("DestinationLng", eventList.get(0).getCoordinates().get(1)); // from firebase
@@ -324,6 +314,49 @@ public class LandmarkActivity extends AppCompatActivity implements GoogleApiClie
             }
         });
 
+
+    }
+
+    private void setLoveButton(final String placeEngName){
+
+        // love button here
+        loveButton = (ImageButton) findViewById(R.id.place_love_btn);
+
+        if(isLoved(placeEngName)){
+            loveButton.setImageResource(R.drawable.ic_favorite_black_24dp);
+        } else {
+            loveButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+        }
+
+        loveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                // DONE : add some behavior to this button!!
+                if(isLoved(placeEngName)){
+                    // DONE : add delete favorite action here!!
+                    ReadWriteXMLUtility.deleteFavorite(LandmarkActivity.this, placeEngName);
+                    loveButton.setImageResource(R.drawable.ic_favorite_border_black_24dp);
+                }
+                else {
+                    ReadWriteXMLUtility.addFavoritePlace(LandmarkActivity.this, placeEngName);
+                    loveButton.setImageResource(R.drawable.ic_favorite_black_24dp);
+                }
+
+                YoYo.with(Techniques.ZoomIn)
+                        .duration(320)
+                        .playOn(findViewById(loveButton.getId()));
+
+            }
+        });
+
+    }
+
+    private boolean isLoved(String placeEngName){
+
+        ArrayList<String> loveList = ReadWriteXMLUtility.getAllFavoritePlace(this);
+
+        return loveList.contains(placeEngName);
 
     }
 
@@ -388,7 +421,7 @@ public class LandmarkActivity extends AppCompatActivity implements GoogleApiClie
 
         if(mLastLocation != null){
 
-            Toast.makeText(this, "mastLocation get!! : " + mLastLocation.getLatitude(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "lastLocation get!! : " + mLastLocation.getLatitude(), Toast.LENGTH_SHORT).show();
 
         }
 

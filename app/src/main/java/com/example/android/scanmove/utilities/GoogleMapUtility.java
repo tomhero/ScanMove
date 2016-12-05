@@ -25,6 +25,9 @@ public class GoogleMapUtility implements OnMapReadyCallback {
     private Context ctx;
     private Marker marker;
 
+    public static double fakeLatitude = 13.731108;
+    public static double fakeLongtitide = 100.781384;
+
     public GoogleMapUtility(Context ctx) {
         this.ctx = ctx;
     }

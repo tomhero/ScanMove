@@ -1,15 +1,49 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.android.scanmove.activities.FavoritePlaceFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <!-- DOING: Update blank fragment layout -->
+
+    <ImageView
+        android:paddingLeft="16dp"
+        android:id="@+id/fav_icon"
+        android:paddingTop="8dp"
+        app:srcCompat="@drawable/ic_favorite_black_24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <TextView
-        android:gravity="center"
+        android:layout_toRightOf="@id/fav_icon"
+        android:textColor="@color/colorLove"
+        android:fontFamily="sans-serif-light"
+        android:text="My Favorite Place"
+        android:textSize="26sp"
+        android:padding="16dp"
+        android:id="@+id/fav_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+
+    <View
+        android:id="@+id/fav_div"
+        android:layout_below="@id/fav_title"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginLeft="16dp"
+        android:background="@drawable/divider" />
+
+    <ListView
+        android:layout_below="@id/fav_div"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:id="@+id/fav_list"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/favorite_fragment_title"
-        android:textSize="26sp"/>
+        android:drawSelectorOnTop="true"/>
 
-</FrameLayout>
+</RelativeLayout>
